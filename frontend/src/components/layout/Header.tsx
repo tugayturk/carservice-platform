@@ -1,3 +1,4 @@
+"use client"
 import Link from 'next/link'
 import { Input } from "@/components/ui/input"
 import {
@@ -9,10 +10,21 @@ import { ModeToggle } from "@/components/ModeToggle"
 import Image from "next/image";
 import UserMenu from '../Menu/UserMenu'
 import { Button } from '../ui/button';
+import { useEffect, useState } from 'react';
+import { getCategories } from '@/lib/api';
+import { Category } from '@/types'
 
 const Header = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+ 
+  useEffect(() => {
+    getCategories().then((data) => {
+      setCategories(data.data);
+    });
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 w-full h-24 z-50 border-b-2 bg-gray-200 dark:bg-gray-900 overflow-visible">
+    <header className="fixed top-0 left-0 w-full h-32 z-50 border-b-2 bg-gray-200 dark:bg-gray-900 overflow-visible">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between overflow-visible">
 
         <div className="flex items-center justify-between">
@@ -42,6 +54,17 @@ const Header = () => {
           <ModeToggle />
         </div>
       </div>
+
+      <div className="flex items-center justify-center gap-4 text-sm">
+        {categories?.map((category:any) => (
+          <Link href={`/porducts/${category.name.toLowerCase()}`} key={category.id} 
+          className='cursor-pointer border-b-2 border-transparent hover:border-primary transition-all duration-300'>
+              {category.name}
+          </Link>
+        ))}
+      </div>
+
+
     </header>
   )
 }
