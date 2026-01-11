@@ -52,7 +52,7 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
     }, [ product.id])
 
 
-    return (
+    return ( 
         <div >
         <Card key={product.id}>
             <CardHeader className="flex-shrink-0">

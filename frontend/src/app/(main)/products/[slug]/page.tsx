@@ -17,20 +17,25 @@ import { Card } from '@/components/ui/card'
 import { CardContent } from '@/components/ui/card'
 import Image from 'next/image'
 import Link from 'next/link'
+import ProductCardSkeleton from '@/components/product/ProductCardSkeleton'
 
 const ProductDetailPage = () => {
     const params = useParams()
     const slug = params.slug as string
     const [product, setProduct] = useState<Product | null>(null)
     const [recentProducts, setRecentProducts] = useState<ProductType[]>([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
+        setIsLoading(true)
         if (slug) {
             getProductBySlug(slug).then((data) => {
                 setProduct(data.data?.[0] || null)
             }).catch((error) => {
                 console.error('Error fetching product:', error)
                 setProduct(null)
+            }).finally(() => {
+                setIsLoading(false)
             })
         }
 
@@ -44,17 +49,18 @@ const ProductDetailPage = () => {
 
     }, [slug])
 
-    if (!product) {
-        return <div>Product not found</div>
-    }
-    if (!product) {
-        return <div className="container mx-auto px-4 py-8">Loading...</div>
-    }
+   
 
     return (<>
+        {isLoading ? (
+            <div className="container mx-auto px-4 py-8">
+                <ProductCardSkeleton />
+            </div>
+        ) : (
         <div className="max-w-md mx-auto px-4 py-8">
-            <ProductCard product={product} isDetail={true} />
-        </div>
+                <ProductCard product={product as Product} isDetail={true} />
+            </div>
+        )}
 
         {recentProducts.length > 0 && (
             <div className="mt-2 max-w-7xl mx-auto px-4 py-8">
