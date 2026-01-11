@@ -9,13 +9,14 @@ import {
 import { ModeToggle } from "@/components/ModeToggle"
 import Image from "next/image";
 import UserMenu from '../Menu/UserMenu'
-import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
 import { getCategories } from '@/lib/api';
 import { Category } from '@/types'
+import useCartQuantityStore from '@/hooks/useCartQuantity'
 
 const Header = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const { cartQuantity } = useCartQuantityStore()
  
   useEffect(() => {
     getCategories().then((data) => {
@@ -47,9 +48,14 @@ const Header = () => {
 
         <div className="flex items-center gap-2 w-1/4 justify-end ">
           <UserMenu />
-          <Button variant="outline" >
-            <ShoppingCart className="w-4 h-4" />
-          </Button>
+          <Link href="/cart" className='relative cursor-pointer bg-white px-3 py-2 rounded-md'>
+            <ShoppingCart className="w-4 h-4" /> 
+            {cartQuantity > 0 && (
+              <span className='absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center'>
+                {cartQuantity}
+              </span>
+            )}
+          </Link>
 
           <ModeToggle />
         </div>
