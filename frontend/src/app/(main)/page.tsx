@@ -14,16 +14,27 @@ import { getSliderImages } from "@/lib/api"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import GetCarts from "@/actions/getCart"
+import useCartQuantityStore from "@/hooks/useCartQuantity"
 export default function Home() {
   const [user, setUser] = useState<any>(null)
   const router = useRouter()
   const [sliderImages, setSliderImages] = useState<any>([])
+
+  const { cartQuantity, setCartQuantity } = useCartQuantityStore()
+  const getCarts = async () => {
+    const data = await GetCarts()
+    setCartQuantity(data.data.length)
+  }
+
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const userData = window.localStorage.getItem("user")
       if (userData) {
         try {
           setUser(JSON.parse(userData))
+          getCarts()
           getSliderImages().then((data) => {
             setSliderImages(data.data)
           }).catch((error) => {
@@ -60,6 +71,7 @@ export default function Home() {
                       fill
                       className="object-cover w-full"
                       unoptimized
+                      loading="eager"
                     />
                   </div>
                 </CardContent>

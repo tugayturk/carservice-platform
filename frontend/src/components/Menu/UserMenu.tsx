@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation"
 import useAuthStore from "@/hooks/useAuth"
 import { useEffect } from "react"
 
-const UserMenu = () => {
+const UserMenu = ({ username }: { username: string }) => {
     const router = useRouter()
     const { jwt, setJwt } = useAuthStore()
 
@@ -50,7 +50,7 @@ const UserMenu = () => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56" align="start">
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuLabel>{username.charAt(0).toUpperCase() + username.slice(1)}</DropdownMenuLabel>
                         <DropdownMenuItem>
                             Profile
                         </DropdownMenuItem>

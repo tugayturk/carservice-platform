@@ -21,10 +21,9 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
 } from "@/components/ui/form"
-import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
+import useAuthStore from '@/hooks/useAuth'
 
 
 const searchSchema = z.object({
@@ -35,9 +34,9 @@ type SearchFormValues = z.infer<typeof searchSchema>; // form values type
 
 const Header = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [username, setUsername] = useState<string | null>(null);
   const { cartQuantity } = useCartQuantityStore()
   const router = useRouter();
-  
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
@@ -51,28 +50,31 @@ const Header = () => {
   }
 }
 
-
   useEffect(() => {
     getCategories().then((data) => {
       setCategories(data.data);
     });
+
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      setUsername(user.username);
+    }
   }, []);
 
-
-
   return (
-    <header className="fixed top-0 left-0 w-full h-34 z-50 border-b-2 bg-gray-200 dark:bg-gray-900 overflow-visible">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between overflow-visible border-b-2 border-gray-300 dark:border-gray-700">
+    <header className="fixed top-0 left-0 w-full h-28 z-50 border-b-2 bg-gray-200 dark:bg-gray-900 overflow-visible">
+      <div className="container mx-auto px-4 py-1 flex items-center justify-between overflow-visible border-b-2 border-gray-300 dark:border-gray-700">
 
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center">
+        <div>
+          <Link href="/">
             <Image
               src="/logo.png"
               alt="Site Logo"
               width={60}
-              height={40}
+              height={60}
               priority
-              className='mb-2'
+              className='mb-1'
             />
           </Link>
         </div>
@@ -97,7 +99,7 @@ const Header = () => {
           </Form>
 
         <div className="flex items-center gap-2 w-1/4 justify-end ">
-          <UserMenu />
+          <UserMenu username={username as string} />
           <Link href="/cart" className='relative cursor-pointer bg-white px-3 py-2 rounded-md'>
             <ShoppingCart className="w-4 h-4" />
             {cartQuantity > 0 && (
@@ -111,10 +113,10 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-4 text-sm pt-1">
+      <div className="flex items-center text-sm py-1 gap-4 w-full justify-center">
         {categories?.map((category: any) => (
           <Link href={`/products/category/${category.name.toLowerCase()}`} key={category.id}
-            className='cursor-pointer border-b-2 border-transparent hover:border-primary transition-all duration-300'>
+            className='cursor-pointer bg-white px-3 py-1 rounded-md'>
             {category.name}
           </Link>
         ))}

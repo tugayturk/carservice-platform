@@ -18,7 +18,7 @@ import registerUser from "@/actions/register"
 import startSession from "@/lib/session"
 import { useRouter } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
-import { toast } from "sonner"
+import { ToastContainer, toast } from 'react-toastify';
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -121,6 +121,7 @@ const RegisterPage = () => {
                     
                 </form>
             </Form>
+            <ToastContainer />
         </div>
     )
 }

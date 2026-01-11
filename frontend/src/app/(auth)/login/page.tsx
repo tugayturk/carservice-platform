@@ -18,7 +18,8 @@ import { useRouter } from "next/navigation"
 import startSession from "@/lib/session"
 import loginUser from "@/actions/login"
 import { Spinner } from "@/components/ui/spinner"
-import { toast } from "sonner"
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const formSchema = z.object({
     email: z.string().email({
@@ -45,7 +46,6 @@ const LoginPage = () => {
       
         setLoader(true)
         loginUser(values.email, values.password).then((res) => {
-            console.log(res)
             startSession(res.user,res.jwt)
             setLoader(false)
             toast.success("Login Successfully")
@@ -99,6 +99,8 @@ const LoginPage = () => {
             {loader ? <Spinner/> : <Button className="w-full" type="submit">Login</Button> }
         </form>
     </Form>
+
+    <ToastContainer />
 </div>
   )
 }

@@ -55,7 +55,7 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
     return ( 
         <div >
         <Card key={product.id}>
-            <CardHeader className="flex-shrink-0">
+            <CardHeader className="flex-shrink-0 items-center justify-center">
                 <CardTitle className="flex justify-center">{product.name}</CardTitle>
                 <Image
                     src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image.url}`}
