@@ -40,14 +40,11 @@ const CartPage = () => {
   }, [])
 
   const handleRemoveFromCart = (id: string) => {
-    console.log(id)
     DeleteToCart(id, jwt).then((data: any) => {
-      console.log(data)
       getCarts()
     })
   }
 
-  console.log(carts)
 
   return (
     <div className='container mx-auto px-4 py-4'>

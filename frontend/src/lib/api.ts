@@ -20,3 +20,13 @@ export async function getSliderImages() {
     const response =  await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/sliders?populate=*`);
     return response.data;   
 }
+
+export async function getCategoryProductsByFilter(filter: string) {
+    const response =  await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/products?filters[category][slug][$eq]=${filter}&populate=*`);
+    return response.data;   
+}
+
+export async function getProductsBySearch(search: string) {
+    const response =  await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/products?filters[name][$containsi]=${search}&populate=*`);
+    return response.data;   
+}

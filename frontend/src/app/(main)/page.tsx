@@ -26,7 +26,6 @@ export default function Home() {
           setUser(JSON.parse(userData))
           getSliderImages().then((data) => {
             setSliderImages(data.data)
-            console.log(data.data)
           }).catch((error) => {
             console.error("Error fetching slider images:", error)
           })

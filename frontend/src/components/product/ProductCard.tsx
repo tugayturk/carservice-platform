@@ -21,12 +21,18 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog"
+import { useEffect } from "react"
+import GetCarts from "@/actions/getCart"
 
 const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolean }) => {
 
     const { cartQuantity, setCartQuantity } = useCartQuantityStore()
-
+    
+    const getCarts = async () => {
+        const data = await GetCarts()
+        setCartQuantity(data.data.length)
+    }
 
     const handleAddToCart = async () => {
         const jwt = localStorage.getItem('jwt')
@@ -41,9 +47,13 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
         }
     }
 
+    useEffect(() => {
+        getCarts()
+    }, [ product.id])
 
 
     return (
+        <div >
         <Card key={product.id}>
             <CardHeader className="flex-shrink-0">
                 <CardTitle className="flex justify-center">{product.name}</CardTitle>
@@ -63,7 +73,7 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
 
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button variant="destructive">{product.price} TL</Button>
+                            <Button disabled={product.stock == 0} variant="destructive">{product.price} TL</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
@@ -86,7 +96,8 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
             </CardFooter>
             <p className="text-sm text-gray-500 flex justify-center"> {product.stock != 0 ? product.stock + ' adet kaldı' : 'Bu ürün stokta yok'}</p>
         </Card>
-    )
+    </div>
+)
 }
 
 export default ProductCard
