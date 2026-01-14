@@ -22,17 +22,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useEffect } from "react"
-import GetCarts from "@/actions/getCart"
+
 
 const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolean }) => {
 
     const { cartQuantity, setCartQuantity } = useCartQuantityStore()
-    
-    const getCarts = async () => {
-        const data = await GetCarts()
-        setCartQuantity(data.data.length)
-    }
 
     const handleAddToCart = async () => {
         const jwt = localStorage.getItem('jwt')
@@ -42,15 +36,10 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
                 name: product.name,
                 quantity: 1
             }
-            const response = await addToCart(data, jwt)
+             await addToCart(data, jwt)
             setCartQuantity(cartQuantity + 1)
         }
     }
-
-    useEffect(() => {
-        getCarts()
-    }, [ product.id])
-
 
     return ( 
         <div >
@@ -64,6 +53,7 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
                     height={250}
                     unoptimized
                     className="object-cover w-48 h-48"
+                    loading="eager"
                 />
             </CardHeader>
             <CardDescription className="text-sm text-gray-500 flex justify-center">{product.description}</CardDescription>

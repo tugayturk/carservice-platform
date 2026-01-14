@@ -2,6 +2,10 @@
 
 Oto yedek parça ve servis ürünleri için full-stack e-ticaret platformu.
 
+## Ekran Görüntüsü
+
+![Products Page](docs/images/products.png)
+
 ## Teknolojiler
 
 ### Frontend
