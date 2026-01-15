@@ -115,18 +115,33 @@ function CheckoutPage() {
       address: data.address,
       zipCode: "34000",
     }
-    const basketItems = carts.map((cart: any) => ({
-      id: cart.id,
-      name: cart.name,
-      quantity: cart.quantity,
-      price: cart.amount,
-      itemType: "PHYSICAL",
-      category1: "1",
-    }))
+    // Flatten cart_items from all carts for basket items
+    const basketItems = carts.flatMap((cart: any) => 
+      (cart.cart_items || []).map((item: any) => ({
+        id: item.product?.id || item.id,
+        name: item.product?.name || 'Ürün',
+        quantity: item.quantity,
+        price: item.price,
+        itemType: "PHYSICAL",
+        category1: "1",
+      }))
+    )
+
+    // Calculate total from cart_items
+    const calculateTotal = () => {
+      return carts.reduce((acc: number, cart: any) => {
+        const cartItemsTotal = (cart.cart_items || []).reduce((itemAcc: number, item: any) => {
+          return itemAcc + (item.price || 0)
+        }, 0)
+        return acc + cartItemsTotal
+      }, 0)
+    }
+
+    const totalPrice = calculateTotal()
 
     const paymentData = {
-      price: carts.reduce((acc: number, cart: any) => acc + cart.amount, 0),
-      paidPrice: carts.reduce((acc: number, cart: any) => acc + cart.amount, 0),
+      price: totalPrice,
+      paidPrice: totalPrice,
       currency: "TRY",
       basketId: "1234567890",
       paymentCard: paymentCard,

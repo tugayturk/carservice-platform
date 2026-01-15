@@ -30,13 +30,16 @@ const ProductCard = ({ product, isDetail }: { product: Product, isDetail: boolea
 
     const handleAddToCart = async () => {
         const jwt = localStorage.getItem('jwt')
-        if (jwt) {
-            let data = {
-                amount: product.price,
-                name: product.name,
-                quantity: 1
+        const userStr = localStorage.getItem('user')
+        if (jwt && userStr) {
+            const user = JSON.parse(userStr)
+            const data = {
+                productId: product.id,
+                quantity: 1,
+                price: product.price,
+                user: user.username
             }
-             await addToCart(data, jwt)
+            await addToCart(data, jwt)
             setCartQuantity(cartQuantity + 1)
         }
     }

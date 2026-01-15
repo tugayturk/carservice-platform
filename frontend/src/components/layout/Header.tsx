@@ -101,7 +101,7 @@ const Header = () => {
         <div className="flex items-center gap-2 w-1/4 justify-end ">
           <UserMenu username={username as string} />
           <Link href="/cart" className='relative cursor-pointer bg-white px-3 py-2 rounded-md'>
-            <ShoppingCart className="w-4 h-4" />
+            <ShoppingCart className="w-4 h-4 dark:text-black" />
             {cartQuantity > 0 && (
               <span className='absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center'>
                 {cartQuantity}
@@ -116,7 +116,7 @@ const Header = () => {
       <div className="flex items-center text-sm py-1 gap-4 w-full justify-center">
         {categories?.map((category: any) => (
           <Link href={`/products/category/${category.name.toLowerCase()}`} key={category.id}
-            className='cursor-pointer bg-white px-3 py-1 rounded-md'>
+            className='cursor-pointer bg-white px-3 py-1 rounded-md dark:text-black'>
             {category.name}
           </Link>
         ))}

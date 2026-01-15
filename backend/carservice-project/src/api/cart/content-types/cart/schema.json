@@ -14,11 +14,14 @@
     "amount": {
       "type": "integer"
     },
-    "name": {
+    "user": {
       "type": "string"
     },
-    "quantity": {
-      "type": "integer"
+    "cart_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cart-item.cart-item",
+      "mappedBy": "cart"
     }
   }
 }
