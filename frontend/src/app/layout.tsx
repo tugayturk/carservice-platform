@@ -6,6 +6,11 @@ import { Toaster } from "@/components/ui/sonner"
 export const metadata: Metadata = {
   title: "Özrenotek",
   description: "BoschCarService",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -25,7 +30,6 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
-
       </body>
     </html>
   );
